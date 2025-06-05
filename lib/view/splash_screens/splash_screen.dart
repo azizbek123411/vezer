@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:vezer/utils/colors.dart';
 import 'package:vezer/view/pages/home_page.dart';
 
@@ -12,29 +13,10 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  late Timer _timer;
-  @override
-  void initState() {
-    _timer = Timer(Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(),
-          ),
-        );
-      }
-    });
-    super.initState();
-  }
+ 
+  
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _timer.cancel();
-  }
-
+final box=Hive.box('start');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,12 +59,13 @@ class _SplashScreenState extends State<SplashScreen> {
                 padding: EdgeInsets.only(top: 30),
                 child: ElevatedButton(
                   onPressed: () {
-                    _timer.cancel();
+                    
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => HomePage(),
                         ));
+                        box.put(1, 1);
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: buttonColor,
