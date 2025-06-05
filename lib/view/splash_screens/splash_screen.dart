@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:vezer/utils/colors.dart';
+import 'package:vezer/view/pages/home_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -9,10 +12,33 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late Timer _timer;
+  @override
+  void initState() {
+    _timer = Timer(Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ),
+        );
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _timer.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20),
@@ -26,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     fontSize: 32,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.5,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ),
@@ -41,28 +67,35 @@ class _SplashScreenState extends State<SplashScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 17,
-                    // fontWeight: FontWeight.w800,
                     letterSpacing: -0.5,
                     height: 1.2,
-                    color: Colors.white60,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 30),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _timer.cancel();
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ));
+                  },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: buttonColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)
-                    )                  ),
+                      backgroundColor: buttonColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20))),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50,vertical: 15),
-                    child: Text('Get Started',style:TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold
-                    )),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 15),
+                    child: Text('Get Started',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18)),
                   ),
                 ),
               ),
